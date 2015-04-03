@@ -36,7 +36,7 @@ std::list<int> list_sieve(const int max) {
 
 		// Remove all numbers divisible by current prime.
 		nums.remove_if([curr_prime](const int i){ return i != curr_prime && i % curr_prime == 0; });
-		it = std::next(std::find(nums.begin(), nums.end(), curr_prime));
+		it++;
 	}
 	return nums;
 }
@@ -50,26 +50,32 @@ void print_primes(const T& primes) {
 	}	
 }
 
+inline double time_in_secs (clock_t t) {
+	return (double)t / CLOCKS_PER_SEC;
+}
+
 int main() {
 
-	clock_t t;
+	const int MAX = 100000;
+	clock_t t_list, t_vec;
 
 	// LIST
-	t = clock();
-	auto list_primes = list_sieve(10000);	
-	t = clock() - t;
+	t_list = clock();
+	auto list_primes = list_sieve(MAX);	
+	t_list = clock() - t_list;
 
 	std::cout << "list\n\n";	
 	print_primes(list_primes);	
-	std::cout << "That took " << ((float)t) / CLOCKS_PER_SEC << " seconds.\n\n\n";
 
 	// VECTOR
-	t = clock();
-	auto vec_primes = vec_sieve(10000);
-	t = clock() - t;
+	t_vec = clock();
+	auto vec_primes = vec_sieve(MAX);
+	t_vec = clock() - t_vec;
 
 	std::cout << "vector\n\n";
 	print_primes(vec_primes);
-	std::cout << "That took " << ((float)t) / CLOCKS_PER_SEC << " seconds.\n\n\n";
+
+	std::cout << "Using a list took " << time_in_secs(t_list) << " seconds.\n\n";
+	std::cout << "Using a vector took " << time_in_secs(t_vec) << " seconds.\n\n";
 }
 
